@@ -9,8 +9,8 @@ app.use(cors());
 app.use(authRouter);
 app.use(tokenAuth);
 
-app.get("/", (req, res) => {
-  res.send("ugottoit!");
+app.get("/api/verify", (req, res) => {
+  res.send("Verified!");
 });
 app.listen(PORT, () => {
   console.log("Server is running on port 3000");

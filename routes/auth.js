@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const connection = require("../db");
-authRouter.post("/signUp", (req, res) => {
+authRouter.post("/api/signUp", (req, res) => {
   const { username, password, email, usertype } = req.body;
   if (!email.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)) {
     res.status(400).send({ status: "failed", element: "email", message: "Invalid email!" });
@@ -47,7 +47,7 @@ authRouter.post("/signUp", (req, res) => {
   }
 });
 
-authRouter.post("/login", (req, res) => {
+authRouter.post("/api/login", (req, res) => {
   const { email, password } = req.body;
   var query = `SELECT * FROM \`User\` WHERE \`email\` = '${email}'`;
   new Promise((resolve, reject) => {
@@ -57,7 +57,7 @@ authRouter.post("/login", (req, res) => {
     });
   }).then((result) => {
     if (result.length == 0) {
-      res.status(400).send("User not found!");
+      res.status(400).send({ status: "failed", element: "email", message: "User not found!" });
     } else {
       if (bcryptjs.compareSync(password, result[0].password)) {
         let user = {
@@ -65,10 +65,10 @@ authRouter.post("/login", (req, res) => {
           username: result[0].name,
           type: result[0].type,
         };
-        const token = jwt.sign({ user }, "thisisthesecretkey", { expiresIn: "1d" });
-        res.send({ token, user });
+        const jtoken = jwt.sign({ user }, "thisisthesecretkey", { expiresIn: "1d" });
+        res.send({ status: "success", token: jtoken, user: user });
       } else {
-        res.status(400).send("Invalid password!");
+        res.status(400).send({ status: "failed", element: "password", message: "Invalid Password!" });
       }
     }
   });
