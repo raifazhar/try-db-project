@@ -1,10 +1,10 @@
-const express = require("express");
+require("dotenv").config();
 const mysql = require("mysql");
 const connection = mysql.createConnection({
-  host: "sql6.freesqldatabase.com",
-  user: "sql6691466",
-  password: "9NhEcXl3Ha",
-  database: "sql6691466",
+  host: process.env.dbhost,
+  user: process.env.dbuser,
+  password: process.env.dbpassword,
+  database: process.env.dbdatabase,
 });
 
 connection.connect((err) => {

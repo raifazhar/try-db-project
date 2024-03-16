@@ -65,7 +65,7 @@ authRouter.post("/api/login", (req, res) => {
           username: result[0].name,
           type: result[0].type,
         };
-        const jtoken = jwt.sign({ user }, "thisisthesecretkey", { expiresIn: "1d" });
+        const jtoken = jwt.sign({ user }, process.env.jwtsecret, { expiresIn: "1d" });
         res.send({ status: "success", token: jtoken, user: user });
       } else {
         res.status(400).send({ status: "failed", element: "password", message: "Invalid Password!" });
