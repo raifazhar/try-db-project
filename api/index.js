@@ -8,19 +8,11 @@ var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/test", (req, res) => {
-  res.send("Express on Vercel");
-});
-
 app.use(authRouter);
 app.use(tokenAuth);
 
 app.get("/api/verify", (req, res) => {
   res.send("Verified!");
-});
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
 });
 
 app.listen(process.PORT, () => console.log("Server is running on port 3000"));
