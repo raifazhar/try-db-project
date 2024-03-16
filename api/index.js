@@ -18,6 +18,11 @@ app.use(tokenAuth);
 app.get("/api/verify", (req, res) => {
   res.send("Verified!");
 });
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.listen(process.PORT, () => console.log("Server is running on port 3000"));
 
 module.exports = app;
