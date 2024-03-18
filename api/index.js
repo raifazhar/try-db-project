@@ -8,6 +8,10 @@ var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send(process.env.PORT);
+});
+//middlewares
 app.use(authRouter);
 app.use(tokenAuth);
 
