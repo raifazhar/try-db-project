@@ -57,7 +57,7 @@ authRouter.post("/api/login", (req, res) => {
     });
   }).then((result) => {
     if (result.length == 0) {
-      res.status(400).send({ status: "failed", element: "email", message: "User not found!" });
+      res.status(401).send({ element: "email", message: "User not found!" });
     } else {
       if (bcryptjs.compareSync(password, result[0].password)) {
         let user = {
@@ -66,9 +66,9 @@ authRouter.post("/api/login", (req, res) => {
           type: result[0].type,
         };
         const jtoken = jwt.sign({ user }, process.env.jwtsecret, { expiresIn: "1d" });
-        res.send({ status: "success", token: jtoken, user: user });
+        res.send({ token: jtoken, user: user });
       } else {
-        res.status(400).send({ status: "failed", element: "password", message: "Invalid Password!" });
+        res.status(401).send({ element: "password", message: "Invalid Password!" });
       }
     }
   });
