@@ -19,6 +19,6 @@ app.get("/api/verify", (req, res) => {
   res.send("Verified!");
 });
 
-app.listen(process.PORT, () => console.log("Server is running on port 3000"));
+app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 
 module.exports = app;
