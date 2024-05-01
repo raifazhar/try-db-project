@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const authRouter = require("./routes/auth");
 const tokenAuth = require("./middlewares/tokenauth");
+const profileRouter = require("./routes/profile");
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
@@ -14,6 +15,8 @@ app.get("/", (req, res) => {
 //middlewares
 app.use(authRouter);
 app.use(tokenAuth);
+
+app.use(profileRouter);
 
 app.get("/api/verify", (req, res) => {
   res.send("Verified!");
