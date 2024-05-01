@@ -12,15 +12,16 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.send(process.env.PORT);
 });
-//middlewares
 app.use(authRouter);
+
+//middlewares
 app.use(tokenAuth);
-
-app.use(profileRouter);
-
 app.get("/api/verify", (req, res) => {
   res.send("Verified!");
 });
+
+//Routers
+app.use(profileRouter);
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 

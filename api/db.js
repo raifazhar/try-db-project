@@ -1,16 +1,35 @@
 require("dotenv").config();
 const mysql = require("mysql");
-const connection = mysql.createConnection({
+var connectionDetails = {
   host: process.env.dbhost,
   user: process.env.dbuser,
   password: process.env.dbpassword,
   database: process.env.dbdatabase,
-  port: process.env.PORT,
-});
+  port: process.env.dbport,
+};
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("Connected to the remote database!");
-});
+function handleDisconnect() {
+  connection = mysql.createConnection(connectionDetails);
+
+  connection.connect((err) => {
+    if (err) {
+      console.log("Error when connecting to database:", err);
+      setTimeout(handleDisconnect, 60000); // try reconnecting after 1 minute
+    } else {
+      console.log("Connected to the remote database!");
+    }
+  });
+
+  connection.on("error", (err) => {
+    console.log("Database error", err);
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      handleDisconnect();
+    } else {
+      throw err;
+    }
+  });
+}
+
+handleDisconnect();
 
 module.exports = connection;
