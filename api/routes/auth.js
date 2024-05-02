@@ -19,9 +19,8 @@ authRouter.post("/api/signUp", (req, res) => {
   } else if (usertype != 1 && usertype != 2) {
     res.status(401).send({ element: "usertype", message: "Wrong usertype!" });
   } else {
-    var query = `SELECT * FROM \`User\` WHERE \`email\` = '${email}'`;
     new Promise((resolve, reject) => {
-      connection.query(query, (err, result, fields) => {
+      connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email], (err, result, fields) => {
         if (err) reject(err);
         else resolve(result);
       });
@@ -31,9 +30,8 @@ authRouter.post("/api/signUp", (req, res) => {
           res.status(401).send({ element: "user", message: "User already exists!" });
         }
         let hashedPassword = bcryptjs.hashSync(password, 10);
-        query = `INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES ('${username}','${email}','${hashedPassword}',${usertype})`;
         new Promise((resolve, reject) => {
-          connection.query(query, (err, result, fields) => {
+          connection.query(`INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES ('?','?','?',?)`, [username, email, hashedPassword, usertype], (err, result, fields) => {
             if (err) reject(err);
             else resolve(result);
           });
@@ -51,9 +49,8 @@ authRouter.post("/api/signUp", (req, res) => {
 
 authRouter.post("/api/login", (req, res) => {
   const { email, password } = req.body;
-  var query = `SELECT * FROM \`User\` WHERE \`email\` = '${email}'`;
   new Promise((resolve, reject) => {
-    connection.query(query, (err, result, fields) => {
+    connection.query(`SELECT * FROM \`User\` WHERE \`email\` = '?'`, [email], (err, result, fields) => {
       if (err) reject(err);
       else resolve(result);
     });
