@@ -5,7 +5,7 @@ const connection = require("../db");
 profileRouter.get("/api/profile", (req, res) => {
   const user = req.user;
   new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM UserProfileView WHERE \`email\` = '?'`, [user.email], (err, result, fields) => {
+    connection.query(`SELECT * FROM UserProfileView WHERE \`email\` = ?`, [user.email], (err, result, fields) => {
       if (err) reject(err);
       else resolve(result);
     });

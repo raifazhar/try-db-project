@@ -31,7 +31,7 @@ authRouter.post("/api/signUp", (req, res) => {
         }
         let hashedPassword = bcryptjs.hashSync(password, 10);
         new Promise((resolve, reject) => {
-          connection.query(`INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES ('?','?','?',?)`, [username, email, hashedPassword, usertype], (err, result, fields) => {
+          connection.query(`INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES (?,?,?,?)`, [username, email, hashedPassword, parseInt(usertype)], (err, result, fields) => {
             if (err) reject(err);
             else resolve(result);
           });
@@ -50,7 +50,7 @@ authRouter.post("/api/signUp", (req, res) => {
 authRouter.post("/api/login", (req, res) => {
   const { email, password } = req.body;
   new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM \`User\` WHERE \`email\` = '?'`, [email], (err, result, fields) => {
+    connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email], (err, result, fields) => {
       if (err) reject(err);
       else resolve(result);
     });
