@@ -3,19 +3,22 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
 const authRouter = require("./routes/auth");
+const browserRouter = require("./routes/browser");
 const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
 
+//http://localhost:3000/api/
 app.get("/", (req, res) => {
   res.send(process.env.PORT);
 });
 app.use(authRouter);
-
+app.use(browserRouter);
 //middlewares
 app.use(tokenAuth);
+
 app.get("/api/verify", (req, res) => {
   res.send("Verified!");
 });
