@@ -36,4 +36,3 @@ const io = require("socket.io")(server, {
   },
 });
 require("./socket/socket")(io);
-module.exports = server;
