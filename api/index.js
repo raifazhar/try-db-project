@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const authRouter = require("./routes/auth");
 const browserRouter = require("./routes/browser");
+const placeRouter = require("./routes/place");
 const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
 var cors = require("cors");
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 });
 app.use(authRouter);
 app.use(browserRouter);
+app.use(placeRouter)
 //middlewares
 app.use(tokenAuth);
 
