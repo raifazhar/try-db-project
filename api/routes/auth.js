@@ -60,10 +60,12 @@ authRouter.post("/api/login", (req, res) => {
     } else {
       if (bcryptjs.compareSync(password, result[0].password)) {
         let user = {
+          id: result[0].UserID,
           email: result[0].email,
           username: result[0].name,
           type: result[0].type,
         };
+        console.log(user);
         const jtoken = jwt.sign({ user }, process.env.jwtsecret, { expiresIn: "1d" });
         res.send({ token: jtoken, user: user });
       } else {

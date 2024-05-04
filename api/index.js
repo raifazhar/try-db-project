@@ -1,12 +1,12 @@
 require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
-const app = express();
 const authRouter = require("./routes/auth");
 const browserRouter = require("./routes/browser");
 const placeRouter = require("./routes/place");
 const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
+const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 });
 app.use(authRouter);
 app.use(browserRouter);
-app.use(placeRouter)
+app.use(placeRouter);
 //middlewares
 app.use(tokenAuth);
 
@@ -28,6 +28,12 @@ app.get("/api/verify", (req, res) => {
 //Routers
 app.use(profileRouter);
 
-app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
-
-module.exports = app;
+const server = app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
+const io = require("socket.io")(server, {
+  path: "/api/socket.io",
+  cors: {
+    origin: "*",
+  },
+});
+require("./socket/socket")(io);
+module.exports = server;
