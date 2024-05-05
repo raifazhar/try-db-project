@@ -28,7 +28,6 @@ function handleDisconnect() {
       throw err;
     }
   });
-
 }
 
 handleDisconnect();

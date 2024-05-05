@@ -10,10 +10,11 @@ const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
+const port = process.env.PORT || 3000;
 
 //http://localhost:3000/api/
 app.get("/", (req, res) => {
-  res.send(process.env.PORT);
+  res.send(port);
 });
 app.use(authRouter);
 app.use(browserRouter);
@@ -28,7 +29,7 @@ app.get("/api/verify", (req, res) => {
 //Routers
 app.use(profileRouter);
 
-const server = app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
+const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
 const io = require("socket.io")(server, {
   path: "/api/socket.io",
   cors: {
