@@ -7,14 +7,13 @@ const placeRouter = require("./routes/place");
 const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
 const app = express();
-const port = process.env.PORT || 3000;
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
 
-//localhost:3000/api/
-http: app.get("/", (req, res) => {
-  res.send(port);
+//http://localhost:3000/api/
+app.get("/", (req, res) => {
+  res.send(process.env.PORT);
 });
 app.use(authRouter);
 app.use(browserRouter);
@@ -26,10 +25,10 @@ app.get("/api/verify", (req, res) => {
   res.send("Verified!");
 });
 
-Routers;
+//Routers
 app.use(profileRouter);
 
-const server = app.listen(port, () => console.log(`Server is running on port ${port}`));
+const server = app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 const io = require("socket.io")(server, {
   path: "/api/socket.io",
   cors: {

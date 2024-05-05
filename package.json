@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js --env-file=.env",
-    "start": "node ./index.js --env-file=.env"
+    "dev": "nodemon ./api/index.js --env-file=.env",
+    "start": "vercel dev",
+    "deploy": "vercel --prod"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "nodemon": "^3.1.0",
-    "socket.io": "^4.7.5"
+    "socket.io": "^4.7.5",
+    "vercel": "^32.3.0"
   }
 }
