@@ -28,7 +28,7 @@ app.get("/api/verify", (req, res) => {
 //Routers
 app.use(profileRouter);
 
-const server = app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
+app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 //Websockets THAT DONT WORK ON VERCEL
 // const io = require("socket.io")(server, {
 //   path: "/api/socket.io",
@@ -37,5 +37,3 @@ const server = app.listen(process.env.PORT, () => console.log(`Server is running
 //   },
 // });
 // require("./socket/socket")(io);
-
-module.exports = server;
