@@ -29,10 +29,13 @@ app.get("/api/verify", (req, res) => {
 app.use(profileRouter);
 
 const server = app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
-const io = require("socket.io")(server, {
-  path: "/api/socket.io",
-  cors: {
-    origin: "*",
-  },
-});
-require("./socket/socket")(io);
+//Websockets THAT DONT WORK ON VERCEL
+// const io = require("socket.io")(server, {
+//   path: "/api/socket.io",
+//   cors: {
+//     origin: "*",
+//   },
+// });
+// require("./socket/socket")(io);
+
+module.exports = server;
