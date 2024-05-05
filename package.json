@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js --env-file=.env",
-   },
+    "dev": "nodemon ./index.js --env-file=.env"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
