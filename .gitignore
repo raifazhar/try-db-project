@@ -130,7 +130,3 @@ dist
 .pnp.*
 .vercel
 
-
-middlewares/
-routes/
-socket/
