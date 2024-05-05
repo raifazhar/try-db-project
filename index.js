@@ -7,10 +7,10 @@ const placeRouter = require("./routes/place");
 const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
 const app = express();
+const port = process.env.PORT || 3000;
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
-const port = process.env.PORT || 3000;
 
 //http://localhost:3000/api/
 app.get("/", (req, res) => {
