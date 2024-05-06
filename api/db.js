@@ -22,13 +22,12 @@ function handleDisconnect() {
 
   connection.on("error", (err) => {
     console.log("Database error", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+    if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ER_USER_LIMIT_REACHED") {
       handleDisconnect();
     } else {
       throw err;
     }
   });
-
 }
 
 handleDisconnect();
