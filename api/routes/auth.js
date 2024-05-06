@@ -65,7 +65,6 @@ authRouter.post("/api/login", (req, res) => {
           username: result[0].name,
           type: result[0].type,
         };
-        console.log(user);
         const jtoken = jwt.sign({ user }, process.env.jwtsecret, { expiresIn: "1d" });
         res.send({ token: jtoken, user: user });
       } else {
