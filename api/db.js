@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mysql = require("mysql");
+const mysql = require("mysql2/promise");
 var connectionDetails = {
   host: process.env.dbhost,
   user: process.env.dbuser,
@@ -8,28 +8,24 @@ var connectionDetails = {
   port: process.env.dbport,
 };
 
-function handleDisconnect() {
-  connection = mysql.createConnection(connectionDetails);
-
-  connection.connect((err) => {
-    if (err) {
-      console.log("Error when connecting to database:", err);
-      setTimeout(handleDisconnect, 60000); // try reconnecting after 1 minute
-    } else {
-      console.log("Connected to the remote database!");
-    }
   });
-
-  connection.on("error", (err) => {
-    console.log("Database error", err);
-    if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ER_USER_LIMIT_REACHED") {
-      handleDisconnect();
-    } else {
-      throw err;
-    }
-  });
+const pool = mysql.createPool(connectionDetails);
+async function handleDisconnect() {
+  try {
+    const connection = await pool.getConnection();
+    console.log("Connected to remote database");
+    connection.release();
+  } catch (err) {
+    console.log("Error connecting to database");
+    setTimeout(handleDisconnect, 60000);
+  }
 }
 
+pool.on("error", async (err) => {
+  console.log("Database error", err);
+  if (err.code === "PROTOCOL_CONNECTION_LOST" || err.code === "ER_USER_LIMIT_REACHED") handleDisconnect();
+  else throw err;
+});
 handleDisconnect();
 
-module.exports = connection;
+module.exports = pool;

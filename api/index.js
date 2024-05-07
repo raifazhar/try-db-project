@@ -8,7 +8,6 @@ const tokenAuth = require("./middlewares/tokenauth");
 const profileRouter = require("./routes/profile");
 const plansprivateRouter = require("./routes/plans/plansprivate");
 const planspublicRouter = require("./routes/plans/planspublic");
-
 const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());

@@ -4,7 +4,7 @@ const authRouter = express.Router();
 const jwt = require("jsonwebtoken");
 const connection = require("../db");
 
-authRouter.post("/api/signUp", (req, res) => {
+authRouter.post("/api/signUp", async (req, res) => {
   const { username, password, email, usertype } = req.body;
   if (!email.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)) {
     res.status(401).send({ element: "email", message: "Invalid email!" });
@@ -19,42 +19,29 @@ authRouter.post("/api/signUp", (req, res) => {
   } else if (usertype != 1 && usertype != 2) {
     res.status(401).send({ element: "usertype", message: "Wrong usertype!" });
   } else {
-    new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email], (err, result, fields) => {
-        if (err) reject(err);
-        else resolve(result);
-      });
-    })
-      .then((result) => {
-        if (result.length > 0) {
-          res.status(401).send({ element: "user", message: "User already exists!" });
-        }
-        let hashedPassword = bcryptjs.hashSync(password, 10);
-        new Promise((resolve, reject) => {
-          connection.query(`INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES (?,?,?,?)`, [username, email, hashedPassword, parseInt(usertype)], (err, result, fields) => {
-            if (err) reject(err);
-            else resolve(result);
-          });
-        }).then((result) => {
-          res.send({ element: "user", message: "Account Created!" });
-          console.log(`Account Created! with email: ${email}`);
-        });
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(404).send({ element: "user", message: "Account not created!" });
-      });
+    try {
+      let results = await connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email]);
+      result = results[0];
+      if (result.length > 0) {
+        res.status(401).send({ element: "user", message: "User already exists!" });
+      }
+      let hashedPassword = bcryptjs.hashSync(password, 10);
+      results = await connection.query(`INSERT INTO \`User\`(\`name\`, \`email\`, \`password\`, \`type\`) VALUES (?,?,?,?)`, [username, email, hashedPassword, parseInt(usertype)]);
+      result = results[0];
+      res.send({ element: "user", message: "Account Created!" });
+      console.log(`Account Created! with email: ${email}`);
+    } catch (e) {
+      console.log(e);
+      res.status(500).send({ element: "user", message: "Error creating account!" });
+    }
   }
 });
 
-authRouter.post("/api/login", (req, res) => {
+authRouter.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
-  new Promise((resolve, reject) => {
-    connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email], (err, result, fields) => {
-      if (err) reject(err);
-      else resolve(result);
-    });
-  }).then((result) => {
+  try {
+    let results = await connection.query(`SELECT * FROM \`User\` WHERE \`email\` = ?`, [email]);
+    let result = results[0];
     if (result.length == 0) {
       res.status(401).send({ element: "email", message: "User not found!" });
     } else {
@@ -71,7 +58,10 @@ authRouter.post("/api/login", (req, res) => {
         res.status(401).send({ element: "password", message: "Invalid Password!" });
       }
     }
-  });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ element: "user", message: "Error logging in!" });
+  }
 });
 
 module.exports = authRouter;
