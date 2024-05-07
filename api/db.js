@@ -8,7 +8,6 @@ var connectionDetails = {
   port: process.env.dbport,
 };
 
-  });
 const pool = mysql.createPool(connectionDetails);
 async function handleDisconnect() {
   try {
