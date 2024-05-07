@@ -48,11 +48,16 @@ plansprivateRouter.post("/api/userplans/details", async (req, res) => {
     results = await connection.query(`DELETE FROM PlanDetails WHERE \`PlanID\` = ?`, [planID]);
     result = results[0];
     //Insert all details into the database
-    let InsertString = `INSERT INTO PlanDetails (PlanID,DestinationID,Date) VALUES `;
-    details.array.forEach((element) => {
-      console.log(element);
+    if (details.length === 0) return res.send({ msg: "Details Updated" });
+    let InsertString = `INSERT INTO PlanDetails (PlanID,DestinationID,Date) VALUES ?`;
+    let values = details.map((element) => {
+      let date = new Date(element.date);
+      date = date.toISOString().split("T")[0];
+      return [planID, element.destinationID, date];
     });
-    res.send("success");
+    results = await connection.query(InsertString, [values]);
+    result = results[0];
+    res.send(result[0]);
   } catch (e) {
     console.log(e);
     res.status(500).send(e);
