@@ -7,10 +7,21 @@ PlaceRouter.get("/api/placepage", async (req, res) => {
   const pageid = req.query.pageid;
   try {
     let results = await connection.query(sqlQuery, [pageid]);
-    result = results[0];
-    res.send(result[0]);
+    let result = results[0];
+    const newresponse = {
+      pageid: result[0][0].pageID,
+      description: result[0][0].description,
+    };
+
+    // Iterate through the remaining elements
+    for (let i = 0; i < result[0].length; i++) {
+      const element = result[0][i];
+      newresponse[element.pictureID] = element.url;
+    }
+    res.send(newresponse);
   } catch (e) {
-    return res.status(404).send(e);
+    res.status(404).send(e);
+    return;
   }
 });
 
