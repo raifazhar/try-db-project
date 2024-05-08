@@ -1,7 +1,6 @@
 const express = require("express");
 const plansprivateRouter = express.Router();
 const connection = require("../../db");
-const e = require("express");
 
 plansprivateRouter.get("/api/userplans", async (req, res) => {
   const id = req.user.id;
