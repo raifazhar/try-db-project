@@ -5,9 +5,9 @@ const connection = require("../../db");
 plansprivateRouter.get("/api/userplans", async (req, res) => {
   const id = req.user.id;
   try {
-    let results = await connection.query(`SELECT * FROM TravelPlan WHERE \`UserID\` = ?`, [id]);
+    let results = await connection.query(`call getUserPlans(?)`, [id]);
     result = results[0];
-    res.send(result);
+    res.send(result[0]);
   } catch (e) {
     console.log(e);
     res.status(404).send(e);

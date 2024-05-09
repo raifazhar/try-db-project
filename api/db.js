@@ -15,7 +15,7 @@ async function handleDisconnect() {
     console.log("Connected to remote database");
     connection.release();
   } catch (err) {
-    console.log("Error connecting to database");
+    console.log("Error connecting to database:" + err);
     setTimeout(handleDisconnect, 60000);
   }
 }
