@@ -5,7 +5,7 @@ const authRouter = require("./routes/auth");
 const browserRouter = require("./routes/browser");
 const placeRouter = require("./routes/place");
 const tokenAuth = require("./middlewares/tokenauth");
-const profileRouter = require("./routes/profile");
+const { profileRouter, profileRouterprivate } = require("./routes/profile");
 const plansprivateRouter = require("./routes/plans/plansprivate");
 const planspublicRouter = require("./routes/plans/planspublic");
 const app = express();
@@ -22,6 +22,7 @@ app.use(authRouter);
 app.use(browserRouter);
 app.use(placeRouter);
 app.use(planspublicRouter);
+app.use(profileRouter);
 //middlewares
 app.use(tokenAuth);
 
@@ -30,8 +31,8 @@ app.get("/api/verify", (req, res) => {
 });
 
 //Routers
-app.use(profileRouter);
 app.use(plansprivateRouter);
+app.use(profileRouterprivate);
 
 app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
 //Websockets THAT DONT WORK ON VERCEL
