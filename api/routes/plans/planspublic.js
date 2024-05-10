@@ -6,7 +6,9 @@ const jwt = require("jsonwebtoken");
 
 planspublicRouter.get("/api/destinations", async (req, res) => {
   try {
-    let results = await connection.query(`SELECT * FROM Destinations ORDER BY DestinationID ASC`);
+    let results = await connection.query(
+      `SELECT * FROM Destinations ORDER BY DestinationID ASC`
+    );
     result = results[0];
     res.send(result);
   } catch (e) {
@@ -24,7 +26,10 @@ planspublicRouter.get("/api/userplans/details", async (req, res) => {
     if (token !== null && token !== "null") {
       const verified = jwt.verify(token, process.env.jwtsecret);
       if (verified) {
-        let results = await connection.query(`SELECT * FROM TravelPlan WHERE \`PlanID\` = ? AND \`UserID\` = ?`, [planID, verified.user.id]);
+        let results = await connection.query(
+          `SELECT * FROM TravelPlan WHERE \`PlanID\` = ? AND \`UserID\` = ?`,
+          [planID, verified.user.id]
+        );
         if (results[0].length > 0) {
           status = 1;
         }
@@ -32,7 +37,10 @@ planspublicRouter.get("/api/userplans/details", async (req, res) => {
     }
   } catch (e) {}
   try {
-    let results = await connection.query(`SELECT * FROM PlanDetails WHERE \`PlanID\` = ? ORDER BY Date ASC`, [planID]);
+    let results = await connection.query(
+      `SELECT * FROM PlanDetails WHERE \`PlanID\` = ? ORDER BY Date ASC`,
+      [planID]
+    );
     result = results[0];
     res.send({ result, status });
   } catch (e) {

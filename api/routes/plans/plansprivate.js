@@ -26,7 +26,10 @@ plansprivateRouter.post("/api/userplans", async (req, res) => {
     return res.status(400).json({ msg: "Please enter a valid date" });
   }
   try {
-    let results = await connection.query(`INSERT INTO TravelPlan (UserID,Description,Date,Title) VALUES (?,?,?,?)`, [id, description, date, title]);
+    let results = await connection.query(
+      `INSERT INTO TravelPlan (UserID,Description,Date,Title) VALUES (?,?,?,?)`,
+      [id, description, date, title]
+    );
     result = results[0];
     res.send(result);
   } catch (e) {
@@ -40,11 +43,17 @@ plansprivateRouter.post("/api/userplans/details", async (req, res) => {
   const { planID, details } = req.body;
   try {
     //Check if planID belongs to user
-    let results = await connection.query(`SELECT * FROM TravelPlan WHERE \`UserID\` = ? AND \`PlanID\` = ?`, [id, planID]);
+    let results = await connection.query(
+      `SELECT * FROM TravelPlan WHERE \`UserID\` = ? AND \`PlanID\` = ?`,
+      [id, planID]
+    );
     result = results[0];
     if (result.length === 0) return res.status(401).send("Unauthorized");
     //Delete all previous details from the database
-    results = await connection.query(`DELETE FROM PlanDetails WHERE \`PlanID\` = ?`, [planID]);
+    results = await connection.query(
+      `DELETE FROM PlanDetails WHERE \`PlanID\` = ?`,
+      [planID]
+    );
     result = results[0];
     //Insert all details into the database
     if (details.length === 0) return res.send({ msg: "Details Updated" });
