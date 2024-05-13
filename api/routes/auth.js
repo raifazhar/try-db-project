@@ -10,6 +10,8 @@ authRouter.post("/api/signUp", async (req, res) => {
     res.status(401).send({ element: "email", message: "Invalid email!" });
   } else if (password.length < 6) {
     res.status(401).send({ element: "password", message: "Password must be atleast 6 characters long!" });
+  } else if (username.length < 3) {
+    res.status(401).send({ element: "username", message: "Username must be atleast 3 characters long!" });
   } else {
     try {
       let hashedPassword = bcryptjs.hashSync(password, 10);
