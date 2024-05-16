@@ -10,6 +10,7 @@ const plansprivateRouter = require("./routes/plans/plansprivate");
 const planspublicRouter = require("./routes/plans/planspublic");
 const { reviewRouter, readReviewRouter } = require("./routes/review");
 const { postsPublicRouter, postsPrivateRouter } = require("./routes/posts");
+const port=process.env.PORT || 3000
 const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());
@@ -17,7 +18,7 @@ app.use(cors());
 //
 //http://localhost:3000/api/
 app.get("/", (req, res) => {
-  res.send(process.env.PORT || 8000);
+  res.send(port);
 });
 //Public Routers
 app.use(authRouter);
@@ -41,7 +42,7 @@ app.use(postsPrivateRouter);
 app.use(reviewRouter);
 
 app.listen(process.env.PORT, () =>
-  console.log(`Server is running on port ${process.env.PORT || 8000}`)
+  console.log(`Server is running on port ${port}`)
 );
 //Websockets THAT DONT WORK ON VERCEL
 // const io = require("socket.io")(server, {
