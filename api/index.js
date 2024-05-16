@@ -14,7 +14,7 @@ const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
-
+//
 //http://localhost:3000/api/
 app.get("/", (req, res) => {
   res.send(process.env.PORT || 8000);
