@@ -18,9 +18,13 @@ profileRouter.get("/api/profile", async (req, res) => {
     }
   } catch (e) {}
   try {
-    let results = await connection.query(`SELECT * FROM UserProfileView WHERE \`UserID\` = ?`, [id]);
+    let results = await connection.query(
+      `SELECT * FROM UserProfileView WHERE \`UserID\` = ?`,
+      [id]
+    );
     let result = results[0];
-    if (result.length == 0) res.status(404).send("No profile found for that user");
+    if (result.length == 0)
+      res.status(404).send("No profile found for that user");
     else {
       if (id == userid) result[0].isOwner = true;
       else result[0].isOwner = false;
@@ -36,7 +40,12 @@ profileRouterprivate.post("/api/profile", async (req, res) => {
   const user = req.user;
   const { name, bio, travelPrefs } = req.body;
   try {
-    let results = await connection.query(`call updateProfile(?,?,?,?)`, [user.id, name, bio, travelPrefs]);
+    let results = await connection.query(`call updateProfile(?,?,?,?)`, [
+      user.id,
+      name,
+      bio,
+      travelPrefs,
+    ]);
     let result = results[0][0];
     res.send(result);
   } catch (e) {
