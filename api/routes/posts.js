@@ -5,7 +5,7 @@ const postsPrivateRouter = express.Router();
 
 postsPublicRouter.get("/api/posts", async (req, res) => {
   try {
-    let results = await connection.query(`SELECT * FROM Posts`);
+    let results = await connection.query(`SELECT * FROM PostsView`);
     let posts = results[0];
     res.send(posts);
   } catch (e) {
