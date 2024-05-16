@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./api/index.js --env-file=.env",
-    "start": "vercel dev",
-    "deploy": "vercel --prod"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
