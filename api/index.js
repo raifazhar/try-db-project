@@ -10,7 +10,7 @@ const plansprivateRouter = require("./routes/plans/plansprivate");
 const planspublicRouter = require("./routes/plans/planspublic");
 const { reviewRouter, readReviewRouter } = require("./routes/review");
 const { postsPublicRouter, postsPrivateRouter } = require("./routes/posts");
-const port=process.env.PORT || 3000
+const port=process.env.PORT || 8000
 const app = express();
 var cors = require("cors");
 app.use(bodyParser.json());
