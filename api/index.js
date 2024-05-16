@@ -17,7 +17,7 @@ app.use(cors());
 
 //http://localhost:3000/api/
 app.get("/", (req, res) => {
-  res.send(process.env.PORT);
+  res.send(process.env.PORT || 8000);
 });
 //Public Routers
 app.use(authRouter);
@@ -41,7 +41,7 @@ app.use(postsPrivateRouter);
 app.use(reviewRouter);
 
 app.listen(process.env.PORT, () =>
-  console.log(`Server is running on port ${process.env.PORT}`)
+  console.log(`Server is running on port ${process.env.PORT || 8000}`)
 );
 //Websockets THAT DONT WORK ON VERCEL
 // const io = require("socket.io")(server, {
